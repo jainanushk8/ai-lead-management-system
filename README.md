@@ -112,9 +112,6 @@ python scripts/export_data.py
 |   |-- utils/
 |       |-- validators.py         # Regex email and phone validation
 |
-|-- docs/
-|   |-- PROJECT_KNOWLEDGE_BASE.md # Comprehensive architecture & logs
-|
 |-- gamma/
 |   |-- presentation_prompt.md    # Pre-formatted text for Gamma.app
 |   |-- report_data.json          # Enriched exported lead data
