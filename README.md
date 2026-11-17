@@ -135,3 +135,46 @@ python scripts/export_data.py
 |   |-- start_ollama.ps1          # Ollama runner
 |   |-- start_n8n.ps1             # n8n runner
 ```
+
+---
+
+## 💡 Problem-Solving & Technical Interview Defense
+
+### 1. What happens if Ollama is unavailable?
+- **Failure Isolation**: Handled via robust exception traps (`try...except Exception as exc`) in `app/services/ollama_service.py` and `app/services/hermes_agent.py`.
+- **Graceful Degradation**: Instead of crashing the server (HTTP 500), the service logs the error, marks `analysis_status: "failed"`, assigns a safe default temperature (`"warm"`), and stores an explanatory error message. The lead remains safely saved in SQLite for subsequent retry.
+- **Workflow Resilience**: The n8n error-handling branch detects non-200 responses and routes them to an alert/retry queue without terminating the workflow.
+
+### 2. How will you prevent duplicate lead creation?
+- **Atomic Database Constraint**: The `leads` table enforces `email TEXT NOT NULL UNIQUE`.
+- **Zero Race Condition Window**: Rather than relying on a vulnerable "SELECT then INSERT" check (which allows race conditions under concurrent requests), the engine lets SQLite serialize the write. Duplicate inserts raise an immediate `sqlite3.IntegrityError`.
+- **Token Conservation**: The API catches the error and returns `409 Conflict` along with the existing `lead_id`. In n8n, an IF node immediately diverts 409 responses away from Ollama, ensuring **zero LLM tokens or compute are wasted** on duplicate leads.
+
+### 3. What happens if the AI returns invalid JSON?
+- **Three-Tier Parsing Defense**:
+  1. *Grammar Sampling*: Ollama requests use `format: "json"` to restrict output tokens.
+  2. *Direct Parse*: Attempts `json.loads(response)`.
+  3. *Regex Extraction*: If wrapped in markdown or conversational chatter, regex extracts the first balanced `{...}` JSON block.
+  4. *Safe Fallback*: If all parsing fails, it safely defaults to structured fallbacks (`{"temperature": "warm", "requirements": [], "status": "failed"}`) ensuring the API never raises unhandled JSONDecodeErrors.
+
+### 4. How will you handle API timeouts?
+- **Strict Configuration**: Controlled centrally via `OLLAMA_TIMEOUT_SECONDS = 120` in `app/config.py`.
+- **Async Non-Blocking Client**: Calls use `httpx.AsyncClient(timeout=settings.OLLAMA_TIMEOUT_SECONDS)` to prevent hanging FastAPI workers.
+- **n8n Timeouts**: HTTP request nodes in n8n specify explicit 120,000ms timeouts with error triggers to cleanly catch and notify on long-running CPU inferences.
+
+### 5. How will you prevent the AI agent from executing unauthorized actions?
+- **Strict Tool Whitelist**: The agent only has access to a locked dictionary `TOOL_REGISTRY = {"lead_lookup": ..., "lead_status_update": ...}`.
+- **Zero Shell / OS Access**: The agent cannot evaluate arbitrary Python expressions, invoke bash/PowerShell, or execute raw SQL.
+- **Schema & Type Validation**: Arguments are validated (e.g. `lead_id` must parse to `int`; `status` must belong to the approved set `{'new', 'analyzing', 'analyzed', 'contacted', 'closed'}`).
+- **Immutable Audit Logging**: Every attempted call (whether authorized or malicious) is logged to the `agent_logs` SQLite table with parameters, output, status, and timestamp.
+
+### 6. How would you optimize the workflow if 100 leads arrive simultaneously?
+- **Producer-Consumer Queuing**:
+  - Inbound leads are accepted, validated, and stored in SQLite with status `new` in <5ms.
+  - Lead IDs are dispatched to an asynchronous queue (`asyncio.Queue` or Redis Celery worker in production).
+  - Background workers process inference sequentially with `MAX_CONCURRENT_INFERENCES = 1` or `2`, matching available CPU cores and avoiding RAM thrashing.
+- **SQLite WAL Mode**:
+  - SQLite is initialized with `PRAGMA journal_mode=WAL;` and `PRAGMA foreign_keys=ON;`, allowing concurrent non-blocking reads while writes occur.
+- **n8n Concurrency Control**:
+  - n8n execution mode can be configured to queue or batch incoming webhook payloads to smooth traffic spikes.
+
