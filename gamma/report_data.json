@@ -1,0 +1,276 @@
+[
+  {
+    "lead_id": 1,
+    "name": "Rahul Sharma",
+    "email": "rahul@techcorp.in",
+    "phone": "+91 9876543210",
+    "company": "TechCorp India",
+    "message": "We need a custom CRM solution with AI-powered lead scoring.",
+    "status": "contacted",
+    "created_at": "2026-11-17 06:41:29",
+    "temperature": "warm",
+    "requirements": [
+      "custom CRM solution",
+      "AI-powered lead scoring"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"custom CRM solution\",\n \"AI-powered lead scoring\"\n ],\n \"explanation\": \"The message requests a custom CRM solution with AI lead scoring capabilities, indicating a requirement for a specific, tailored software solution to enhance lead management through AI-driven predictive analytics.\"\n}"
+  },
+  {
+    "lead_id": 2,
+    "name": "Priya Patel",
+    "email": "priya@startupxyz.com",
+    "phone": "9123456789",
+    "company": "StartupXYZ",
+    "message": "Looking for workflow automation tools to reduce manual data entry.",
+    "status": "new",
+    "created_at": "2026-11-17 06:41:29",
+    "temperature": "unprocessed",
+    "requirements": [],
+    "analysis_status": "none",
+    "ai_response": ""
+  },
+  {
+    "lead_id": 3,
+    "name": "Rahul Sharma",
+    "email": "rahul_1794897812@techcorp.in",
+    "phone": "+91 9876543210",
+    "company": "TechCorp India",
+    "message": "We need a custom CRM solution with AI-powered lead scoring.",
+    "status": "contacted",
+    "created_at": "2026-11-17 06:43:32",
+    "temperature": "warm",
+    "requirements": [
+      "custom CRM solution",
+      "AI-powered lead scoring"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n  \"temperature\": \"warm\",\n  \"requirements\": [\n    \"custom CRM solution\",\n    \"AI-powered lead scoring\"\n  ],\n  \"explanation\": \"The message requests a custom CRM system with an AI-powered lead scoring feature, indicating a high level of specificity and the need for an advanced solution.\"\n}"
+  },
+  {
+    "lead_id": 4,
+    "name": "Priya Patel",
+    "email": "priya_1794897812@startupxyz.com",
+    "phone": "9123456789",
+    "company": "StartupXYZ",
+    "message": "Looking for workflow automation tools to reduce manual data entry.",
+    "status": "new",
+    "created_at": "2026-11-17 06:43:33",
+    "temperature": "unprocessed",
+    "requirements": [],
+    "analysis_status": "none",
+    "ai_response": ""
+  },
+  {
+    "lead_id": 5,
+    "name": "Marcus Vance",
+    "email": "mvance_1794899382@apexholdings.co",
+    "phone": "+1 415 555 2671",
+    "company": "Apex Holdings LLC",
+    "message": "Hi, our firm currently burns ~$45k/mo on Salesforce and we need to cut costs immediately. We require custom CRM migration, SOC2 compliance, and automated email sequences for 80 SDRs by next month. Can we schedule an executive demo this Thursday at 2pm EST? If not, don't bother.",
+    "status": "closed",
+    "created_at": "2026-11-17 07:09:42",
+    "temperature": "hot",
+    "requirements": [
+      "Custom CRM migration",
+      "SOC2 compliance",
+      "Automated email sequences"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"hot\",\n \"requirements\": [\"Custom CRM migration\", \"SOC2 compliance\", \"Automated email sequences\"],\n \"explanation\": \"The message conveys urgency due to high monthly spending on Salesforce, explicit requirements for a CRM migration, SOC2 compliance, and automated email sequences, as well as a request for an executive demo scheduled within the next few days.\"\n}"
+  },
+  {
+    "lead_id": 6,
+    "name": "QuickRank SEO",
+    "email": "promo_1794899382@rankboosters.biz",
+    "phone": "18005559999",
+    "company": "RankBoosters",
+    "message": "Dear Sir/Madam, we provide top ranking SEO services and guest posting on high DA blogs. Packages start from $99. Reply STOP to unsubscribe.",
+    "status": "analyzed",
+    "created_at": "2026-11-17 07:10:12",
+    "temperature": "warm",
+    "requirements": [
+      "SEO services",
+      "guest posting on high DA blogs"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"SEO services\",\n \"guest posting on high DA blogs\"\n ],\n \"explanation\": \"The message mentions providing SEO services and guest posting on high Domain Authority blogs, with a starting package price point of $99.\"\n}"
+  },
+  {
+    "lead_id": 7,
+    "name": "Ananya Sen",
+    "email": "ananya_1794900535@fintechglobal.com",
+    "phone": "+91 9811223344",
+    "company": "FinTech Global Solutions",
+    "message": "Urgent: We need automated lead routing and custom CRM sync for 40 SDRs before our quarterly launch next month.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:28:55",
+    "temperature": "hot",
+    "requirements": [
+      "automated lead routing",
+      "custom CRM sync",
+      "for 40 SDRs"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"hot\",\n \"requirements\": [\n \"automated lead routing\",\n \"custom CRM sync\",\n \"for 40 SDRs\"\n ],\n \"explanation\": \"The request mentions an urgent need for specific features to support 40 Sales Development Representatives (SDRs) before a quarterly launch. This falls under high priority requirements.\"\n}"
+  },
+  {
+    "lead_id": 8,
+    "name": "David Sterling",
+    "email": "dsterling@apexglobal.com",
+    "phone": "+1 415 555 9012",
+    "company": "Apex Global Capital",
+    "message": "Urgent: We have an immediate budget of $80k approved for an AI-powered lead qualification engine. We need full integration with our Snowflake data warehouse and Salesforce CRM by Q1. Please have an enterprise solutions engineer contact me today.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:39:16",
+    "temperature": "hot",
+    "requirements": [
+      "AI-powered lead qualification engine",
+      "Full integration with Snowflake data warehouse",
+      "Full integration with Salesforce CRM"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n  \"temperature\": \"hot\",\n  \"requirements\": [\n    \"AI-powered lead qualification engine\",\n    \"Full integration with Snowflake data warehouse\",\n    \"Full integration with Salesforce CRM\"\n  ],\n  \"explanation\": \"The message includes explicit requirements for an AI-powered lead qualification engine with full integration needs for a Snowflake data warehouse and Salesforce CRM by Q1, making it a hot request.\"\n}"
+  },
+  {
+    "lead_id": 9,
+    "name": "Sarah Lin",
+    "email": "slin@bioventurelabs.org",
+    "phone": "+1 617 555 3344",
+    "company": "BioVenture Labs",
+    "message": "Looking for automated pipeline solutions to route inbound clinical trial inquiries to our medical liaison team. Need HIPAA compliance assurance and Slack alerts.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:40:28",
+    "temperature": "warm",
+    "requirements": [
+      "automated pipeline solutions",
+      "inbound clinical trial inquiries routing",
+      "medical liaison team"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"automated pipeline solutions\",\n \"inbound clinical trial inquiries routing\",\n \"medical liaison team\"\n ],\n \"explanation\": \"The request calls for automated pipeline solutions to route inbound clinical trial inquiries to a medical liaison team. This requires a solution that can handle incoming inquiries, route them to the appropriate team, and ensure HIPAA compliance for data security and privacy. Additionally, the need for Slack alerts suggests that the system should notify the team or relevant stakeholders about the incoming inquiries.\"\n}"
+  },
+  {
+    "lead_id": 10,
+    "name": "Vikram Malhotra",
+    "email": "vikram@fintechedge.in",
+    "phone": "+91 98200 11223",
+    "company": "FinTech Edge India",
+    "message": "Evaluating AI automation tools for our banking partner onboarding. Currently processing 2,000 inquiries monthly. Interested in testing your API capabilities next quarter.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:40:58",
+    "temperature": "warm",
+    "requirements": [
+      "AI automation tools for banking partner onboarding",
+      "processing 2,000 inquiries monthly"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"AI automation tools for banking partner onboarding\",\n \"processing 2,000 inquiries monthly\"\n ],\n \"explanation\": \"The message indicates a need for evaluating AI automation tools for the onboarding process of banking partners, with the current capacity to handle 2,000 inquiries monthly. This suggests an interest in testing the API capabilities to potentially scale up the system.\"\n}"
+  },
+  {
+    "lead_id": 11,
+    "name": "Elena Rostova",
+    "email": "elena.r@nordicretail.se",
+    "phone": "+46 8 123 4567",
+    "company": "Nordic Retail Group",
+    "message": "Just browsing your website. Could you email me your standard pricing brochure and product deck when you get a chance?",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:41:26",
+    "temperature": "cold",
+    "requirements": [
+      "standard pricing brochure",
+      "product deck"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n  \"temperature\": \"cold\",\n  \"requirements\": [ \"standard pricing brochure\", \"product deck\" ],\n  \"explanation\": \"The user has explicitly requested for the email delivery of the standard pricing brochure and product presentation deck. There are no indications of any specific product or service requirements.\"\n}"
+  },
+  {
+    "lead_id": 12,
+    "name": "Spam Bot 3000",
+    "email": "deals@cryptomarketingblast.xyz",
+    "phone": "+1 800 555 0199",
+    "company": "Crypto Growth Hackers",
+    "message": "Double your website traffic overnight! Guaranteed top Google rank, 50,000 backlink package for only $49. Visit our portal now or reply unsubscribe.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:41:48",
+    "temperature": "hot",
+    "requirements": [
+      "Top Google rank",
+      "50,000 backlinks package"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"hot\",\n \"requirements\": [\"Top Google rank\", \"50,000 backlinks package\"],\n \"explanation\": \"The message promises significant increases in website traffic and Google rank, along with an affordable package for backlinks. This indicates a high temperature as the offer seems too good to be true for such a low cost.\"\n}"
+  },
+  {
+    "lead_id": 13,
+    "name": "Marcus Vance",
+    "email": "m.vance@solarislogistics.de",
+    "phone": "+49 30 9876543",
+    "company": "Solaris Fleet & Logistics",
+    "message": "We need an intelligent dispatch and driver onboarding form automation. Looking to replace our manual Zendesk ticketing system within 60 days.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:42:13",
+    "temperature": "warm",
+    "requirements": [
+      "intelligent dispatch",
+      "driver onboarding form automation"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n  \"temperature\": \"warm\",\n  \"requirements\": [\n    \"intelligent dispatch\",\n    \"driver onboarding form automation\"\n  ],\n  \"explanation\": \"The request mentions the need for an automation solution to replace a manual Zendesk ticketing system within 60 days, focusing on intelligent dispatch and driver onboarding form automation.\"\n}"
+  },
+  {
+    "lead_id": 14,
+    "name": "Pooja Reddy",
+    "email": "pooja@zenithedtech.com",
+    "phone": "+91 91765 43210",
+    "company": "Zenith EdTech",
+    "message": "Student admissions season is coming up. We need an automated lead scoring mechanism to filter parent inquiries based on course preference and scholarship requirements.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:42:37",
+    "temperature": "warm",
+    "requirements": [
+      "automated lead scoring mechanism",
+      "filter parent inquiries",
+      "course preference",
+      "scholarship requirements"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"automated lead scoring mechanism\",\n \"filter parent inquiries\",\n \"course preference\",\n \"scholarship requirements\"\n ],\n \"explanation\": \"Based on the request, an automated lead scoring system is required to effectively filter parent inquiries. The system should be able to identify the course preferences and scholarship requirements mentioned in the inquiries, allowing the system to prioritize and sort inquiries based on these factors.\"\n}"
+  },
+  {
+    "lead_id": 15,
+    "name": "Tom Henderson",
+    "email": "tom@hendersonlaw.co.uk",
+    "phone": "+44 20 7946 0912",
+    "company": "Henderson & Partners Legal",
+    "message": "Does your system offer GDPR-compliant lead capture for corporate litigation inquiries? We require client data encryption at rest and in transit.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:43:04",
+    "temperature": "cold",
+    "requirements": [
+      "GDPR-compliant lead capture",
+      "client data encryption at rest",
+      "client data encryption in transit"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{ \"temperature\": \"cold\", \n  \"requirements\": [ \"GDPR-compliant lead capture\", \"client data encryption at rest\", \"client data encryption in transit\" ], \n  \"explanation\": \"The request mentions requirements related to GDPR compliance for a lead capture system to handle corporate litigation inquiries. This indicates that the temperature is cold as the requirements are specific and clearly stated. The user requires GDPR compliance, client data encryption at rest, and client data encryption in transit for their system.\" }"
+  },
+  {
+    "lead_id": 16,
+    "name": "Spam SEO Offers",
+    "email": "promo@fastrankings.biz",
+    "phone": "+1 888 555 4321",
+    "company": "FastRankings Agency",
+    "message": "Exclusive promotion: Get your website reviewed by senior SEO specialists. Click here for free audit.",
+    "status": "contacted",
+    "created_at": "2026-11-17 07:43:33",
+    "temperature": "warm",
+    "requirements": [
+      "website review",
+      "SEO specialists",
+      "free audit"
+    ],
+    "analysis_status": "completed",
+    "ai_response": "{\n \"temperature\": \"warm\",\n \"requirements\": [\n \"website review\",\n \"SEO specialists\",\n \"free audit\"\n ],\n \"explanation\": \"The message includes an offer for a free website review by senior SEO specialists. This falls under the category of requirements for optimizing a website's SEO performance.\"\n}"
+  }
+]

@@ -1,0 +1,313 @@
+{
+  "name": "AI-Powered Lead Management & Automation Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        180,
+        300
+      ],
+      "webhookId": "lead-intake-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input Validation Node\n// Enforces mandatory fields: name, email, phone, company, message\nconst body = $input.first().json.body || $input.first().json;\nconst requiredFields = ['name', 'email', 'phone', 'company', 'message'];\nconst missing = [];\n\nfor (const field of requiredFields) {\n  if (!body[field] || typeof body[field] !== 'string' || body[field].trim() === '') {\n    missing.push(field);\n  }\n}\n\n// Basic email pattern check\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nlet emailValid = true;\nif (body.email && !emailRegex.test(body.email.trim())) {\n  emailValid = false;\n}\n\nif (missing.length > 0 || !emailValid) {\n  return [{\n    json: {\n      isValid: false,\n      error: missing.length > 0 \n        ? `Missing or empty required fields: ${missing.join(', ')}` \n        : 'Invalid email address format',\n      rawPayload: body\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    isValid: true,\n    lead: {\n      name: body.name.trim(),\n      email: body.email.trim().toLowerCase(),\n      phone: body.phone.trim(),\n      company: body.company.trim(),\n      message: body.message.trim()\n    }\n  }\n}];"
+      },
+      "id": "node-validation",
+      "name": "Validate Lead Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isValid }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-if-valid",
+      "name": "Is Input Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        620,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/leads",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.lead.name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.lead.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json.lead.phone }}"
+            },
+            {
+              "name": "company",
+              "value": "={{ $json.lead.company }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.lead.message }}"
+            }
+          ]
+        },
+        "options": {
+          "neverError": true,
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "node-create-lead",
+      "name": "Create Lead in FastAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.statusCode }}",
+              "operation": "equal",
+              "value2": 409
+            }
+          ]
+        }
+      },
+      "id": "node-if-duplicate",
+      "name": "Is Duplicate (409)?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"aborted_duplicate\",\n  \"message\": \"Lead with this email already exists in system.\",\n  \"details\": {{ JSON.stringify($json.body) }}\n}",
+        "options": {
+          "responseCode": 409
+        }
+      },
+      "id": "node-respond-duplicate",
+      "name": "Respond Duplicate Found",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://127.0.0.1:8000/api/leads/{{ $json.body.id }}/analyze",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "node-analyze-lead",
+      "name": "Ollama LLM Classification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/agent/query",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "=Lead {{ $json.lead_id }} was analyzed as {{ $json.temperature }}. Update lead {{ $json.lead_id }} status to contacted with notes 'AI classified temperature as {{ $json.temperature }} with {{ $json.requirements.length }} requirements'."
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "node-hermes-agent",
+      "name": "Hermes Agent Tool Invocation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"lead_id\": {{ $('Ollama LLM Classification').item.json.lead_id }},\n  \"temperature\": \"{{ $('Ollama LLM Classification').item.json.temperature }}\",\n  \"requirements\": {{ JSON.stringify($('Ollama LLM Classification').item.json.requirements) }},\n  \"agent_action\": {{ JSON.stringify($json) }},\n  \"pipeline_status\": \"completed\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "node-respond-success",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1800,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": false,\n  \"error\": \"Validation failed\",\n  \"details\": \"{{ $json.error }}\"\n}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "node-respond-validation-error",
+      "name": "Respond Validation Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        460
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Validate Lead Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Lead Input": {
+      "main": [
+        [
+          {
+            "node": "Is Input Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Input Valid?": {
+      "main": [
+        [
+          {
+            "node": "Create Lead in FastAPI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Lead in FastAPI": {
+      "main": [
+        [
+          {
+            "node": "Is Duplicate (409)?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Duplicate (409)?": {
+      "main": [
+        [
+          {
+            "node": "Respond Duplicate Found",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ollama LLM Classification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama LLM Classification": {
+      "main": [
+        [
+          {
+            "node": "Hermes Agent Tool Invocation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hermes Agent Tool Invocation": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
